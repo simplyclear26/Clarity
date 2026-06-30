@@ -85,7 +85,7 @@ export default function HubPage() {
       {/* Hero */}
       <section className="border-b border-border px-6 py-20 text-center">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 bg-teal-light text-teal-dark text-[11px] font-medium tracking-widest uppercase px-4 py-1.5 rounded-full mb-8 border border-teal/20">
-          <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" />Simply Clear™ · Clarity Suite
+          <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" />Simply Clear · Clarity Suite
         </motion.div>
         <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}
           className="font-serif text-[clamp(2.2rem,5vw,3.8rem)] leading-[1.1] tracking-tight text-charcoal max-w-3xl mx-auto mb-5">
@@ -109,7 +109,7 @@ export default function HubPage() {
             </div>
             <h3 className="font-serif text-lg text-charcoal mb-1">Enterprise and transformation</h3>
             <p className="text-sm text-charcoal-3 font-light leading-snug">Navigating significant organisational change — technology, operating model, culture, or people.</p>
-            <p className="text-xs text-charcoal-4 mt-3">7 diagnostics · 5–15 min each</p>
+            <p className="text-xs text-charcoal-4 mt-3">7 diagnostics</p>
           </button>
           <button onClick={() => { setAudience('sme'); setFilter('all') }}
             className={`text-left p-6 rounded-xl border-2 transition-all duration-200 ${audience === 'sme' ? 'border-amber bg-amber/5' : 'border-border bg-white hover:border-amber hover:bg-amber/5'}`}>
@@ -118,7 +118,7 @@ export default function HubPage() {
             </div>
             <h3 className="font-serif text-lg text-charcoal mb-1">Small business and leadership</h3>
             <p className="text-sm text-charcoal-3 font-light leading-snug">Running a growing business and dealing with friction, overwhelm, team clarity, or operational drag.</p>
-            <p className="text-xs text-charcoal-4 mt-3">5 diagnostics · 5–7 min each</p>
+            <p className="text-xs text-charcoal-4 mt-3">5 diagnostics</p>
           </button>
         </div>
 

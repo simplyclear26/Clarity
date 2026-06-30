@@ -6,7 +6,7 @@ const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans', display: '
 const dmSerif = DM_Serif_Display({ subsets: ['latin'], variable: '--font-serif', display: 'swap', weight: '400', style: ['normal','italic'] })
 
 export const metadata: Metadata = {
-  title: 'Clarity Suite™ — Simply Clear',
+  title: 'Clarity Suite — Simply Clear',
   description: 'Free diagnostics for leaders navigating enterprise transformation and small business complexity.',
 }
 
