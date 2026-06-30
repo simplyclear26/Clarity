@@ -17,7 +17,7 @@ export function Popup({ onComplete }: { onComplete: () => void }) {
   const [email, setEmail] = useState('')
   const [state, setState] = useState('')
   const [phone, setPhone] = useState('')
-  const [status, setStatus] = useState<'idle'|'submitting'|'success'|'error'>('idle')
+  const [status, setStatus] = useState<'idle'|'submitting'|'success'>('idle')
   const [err, setErr] = useState(false)
 
   useEffect(() => {
@@ -25,18 +25,48 @@ export function Popup({ onComplete }: { onComplete: () => void }) {
     setVisible(true)
   }, [onComplete])
 
-  async function submit() {
+  function submit() {
     if (!name.trim() || !email.trim() || !state) { setErr(true); return }
     setErr(false)
     setStatus('submitting')
-    const body = new URLSearchParams()
-    body.append(ENTRY.name,  name.trim())
-    body.append(ENTRY.email, email.trim())
-    body.append(ENTRY.state, state)
-    if (phone.trim()) body.append(ENTRY.phone, phone.trim())
-    try {
-      await fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() })
-    } catch (_) {}
+
+    // Create a hidden form and submit it to a hidden iframe
+    // This bypasses CORS restrictions that block fetch() to Google Forms
+    const iframe = document.createElement('iframe')
+    iframe.name = 'sc_submit_frame'
+    iframe.style.display = 'none'
+    document.body.appendChild(iframe)
+
+    const form = document.createElement('form')
+    form.action = FORM_ACTION
+    form.method = 'POST'
+    form.target = 'sc_submit_frame'
+
+    const fields: Record<string, string> = {
+      [ENTRY.name]:  name.trim(),
+      [ENTRY.email]: email.trim(),
+      [ENTRY.state]: state,
+      'fvv': '1',
+    }
+    if (phone.trim()) fields[ENTRY.phone] = phone.trim()
+
+    Object.entries(fields).forEach(([k, v]) => {
+      const input = document.createElement('input')
+      input.type = 'hidden'
+      input.name = k
+      input.value = v
+      form.appendChild(input)
+    })
+
+    document.body.appendChild(form)
+    form.submit()
+
+    // Clean up after submission
+    setTimeout(() => {
+      document.body.removeChild(form)
+      document.body.removeChild(iframe)
+    }, 2000)
+
     setStatus('success')
   }
 
