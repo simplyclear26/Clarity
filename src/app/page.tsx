@@ -100,7 +100,7 @@ export default function HubPage() {
 
       {/* Audience selector */}
       <section className="px-6 py-14 max-w-5xl mx-auto">
-        <p className="text-sm font-medium tracking-widest uppercase text-teal text-center mb-8">Where are you right now?</p>
+        <p className="text-sm font-medium tracking-widest uppercase text-teal text-center mb-8">How would you describe your organisation?</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mb-10">
           <button onClick={() => { setAudience('enterprise'); setFilter('all') }}
             className={`text-left p-6 rounded-xl border-2 transition-all duration-200 ${audience === 'enterprise' ? 'border-teal bg-teal-light' : 'border-border bg-white hover:border-teal hover:bg-teal-light/50'}`}>
