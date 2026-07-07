@@ -10,9 +10,66 @@ function ratingStyle(r: string) { return r === 'Strong' ? 'bg-teal-light text-te
 
 interface Props { tool: Tool; results: Results; onRestart: () => void }
 
+function WhatNext({ score }: { score: number }) {
+  const highScore = score >= 50
+
+  const solution = (
+    <a href="https://solutions.simplyclear.work" target="_blank" rel="noopener noreferrer"
+      className={`block border rounded-xl p-6 transition-all hover:shadow-sm ${highScore ? 'border-teal/30 bg-teal-light' : 'border-border bg-sand'}`}>
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <div>
+          <p className="text-xs font-medium tracking-widest uppercase text-teal mb-1">Simply Clear Solution</p>
+          <h3 className="font-serif text-lg text-charcoal">A comprehensive diagnostic. Five deliverables.</h3>
+        </div>
+        <span className="shrink-0 text-sm font-medium text-charcoal border border-border px-3 py-1 rounded-full bg-white">$997</span>
+      </div>
+      <p className="text-sm text-charcoal-3 font-light leading-relaxed mb-4">Thirty minutes of honest answers about your change — your leadership, your people, your delivery. Five structured deliverables plus a 60-minute post-assessment consult.</p>
+      <div className="flex items-center gap-1.5 text-xs text-charcoal-4"><span>30 minutes</span><span>·</span><span>Self-serve</span><span>·</span><span>Results immediately</span></div>
+      <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal">
+        Start the diagnostic
+        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </div>
+    </a>
+  )
+
+  const discover = (
+    <a href="https://simplyclear.work/work-with-us" target="_blank" rel="noopener noreferrer"
+      className={`block border rounded-xl p-6 transition-all hover:shadow-sm ${!highScore ? 'border-teal/30 bg-teal-light' : 'border-border bg-sand'}`}>
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <div>
+          <p className="text-xs font-medium tracking-widest uppercase text-teal mb-1">Discover</p>
+          <h3 className="font-serif text-lg text-charcoal">A practitioner-led engagement.</h3>
+        </div>
+        <span className="shrink-0 text-sm font-medium text-charcoal border border-border px-3 py-1 rounded-full bg-white">From $9,500</span>
+      </div>
+      <p className="text-sm text-charcoal-3 font-light leading-relaxed mb-4">For organisations where the situation is complex enough that a structured diagnostic alone may not surface what matters most. We work alongside you to understand what is really happening.</p>
+      <div className="flex items-center gap-1.5 text-xs text-charcoal-4"><span>Approx 2–4 weeks</span><span>·</span><span>Practitioner-led</span><span>·</span><span>Scope confirmed in first conversation</span></div>
+      <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal">
+        Talk to us about Discover
+        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </div>
+    </a>
+  )
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-8">
+      <div className="mb-6">
+        <p className="text-xs font-medium tracking-widest uppercase text-charcoal-4 mb-2">What you can do next</p>
+        <p className="text-sm text-charcoal-3 font-light leading-relaxed">
+          {highScore
+            ? 'Your results give you enough clarity to act. The Simply Clear Solution will take you deeper — with structured deliverables you can use immediately.'
+            : 'Your results point to complexity that may benefit from a practitioner working alongside you. Here are two ways to move forward.'}
+        </p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {highScore ? <>{solution}{discover}</> : <>{discover}{solution}</>}
+      </div>
+    </motion.div>
+  )
+}
+
 export function ResultsView({ tool, results, onRestart }: Props) {
   const [submitted, setSubmitted] = useState(false)
-  const { serviceRec: rec } = results
   const color = scoreColor(results.overallScore)
   return (
     <section className="py-20 px-6 max-w-5xl mx-auto">
@@ -73,17 +130,9 @@ export function ResultsView({ tool, results, onRestart }: Props) {
           <ul className="space-y-2.5">{results.whatGoodLooksLike.map((w, i) => <li key={i} className="flex items-start gap-2.5 text-sm text-charcoal-2 font-light leading-snug"><span className="text-teal mt-0.5 shrink-0">✓</span>{w}</li>)}</ul>
         </motion.div>
       )}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="border border-teal/30 rounded-2xl overflow-hidden mb-8">
-        <div className="bg-charcoal px-8 py-6 flex items-center justify-between gap-4">
-          <div><p className="text-xs font-medium tracking-widest uppercase text-white/40 mb-1">Based on your results</p><h3 className="font-serif text-xl text-white">{rec.service}</h3></div>
-          {rec.price && <span className="shrink-0 text-sm text-white/50 border border-white/10 px-3 py-1.5 rounded-full">{rec.price}</span>}
-        </div>
-        <div className="bg-sand px-8 py-6">
-          <p className="text-sm font-medium text-teal-dark italic mb-3">{rec.tagline}</p>
-          <p className="text-sm text-charcoal-2 font-light leading-relaxed mb-6">{rec.why}</p>
-          <a href={rec.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-teal text-white text-sm font-medium px-6 py-3 rounded-lg hover:bg-teal-dark transition-all">Learn more about {rec.service}<svg className="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></a>
-        </div>
-      </motion.div>
+
+      <WhatNext score={results.overallScore} />
+
       {!submitted ? <LeadCapture tool={tool} results={results} onSubmitted={() => setSubmitted(true)} /> : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-teal-light border border-teal/20 rounded-xl p-8 text-center mb-8">
           <p className="font-medium text-charcoal mb-1">Thank you — we will be in touch.</p>
